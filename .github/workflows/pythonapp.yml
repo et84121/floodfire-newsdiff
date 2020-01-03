@@ -29,7 +29,7 @@ jobs:
       run: |
         mysql --user="root" --password="root" --execute="CREATE DATABASE floodfireNewsdiffTest;"
         mysql --user="root" --password="root" floodfireNewsdiffTest < _INSTALL/ffnewsdiff.sql
-        "[RDB]\nDB_HOST = localhost\nDB_PORT = 3306\nDB_USER = root\nDB_PASSWORD = root\nDB_DATABASE = floodfireNewsdiffTest" > config.ini
+        printf "[RDB]\nDB_HOST = localhost\nDB_PORT = 3306\nDB_USER = root\nDB_PASSWORD = root\nDB_DATABASE = floodfireNewsdiffTest\n" > config.ini
     - name: Test with pytest
       run: |
         pip install pytest
