@@ -27,7 +27,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Setup Database
       run: |
-        mysql --user="root" --password="root" --execute="CREATE DATABASE floodfire-newsdiff-test;"
+        mysql --user="root" --password="root" --execute="CREATE DATABASE floodfire_newsdiff_test;"
         mysql --user="root" --password="root" < _INSTALL/ffnewsdiff.sql
     - name: Test with pytest
       run: |
