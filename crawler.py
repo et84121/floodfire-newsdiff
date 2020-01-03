@@ -30,8 +30,8 @@ class Crawler():
 
         self.config = ConfigParser()
         self.config.read(dir_path + '/config.ini')
-        if not os.path.exists(dir_path + "/logs/"):
-            os.makedirs(dir_path + "/logs/")
+        if not os.path.exists(dir_path + "/log/"):
+            os.makedirs(dir_path + "/log/")
         file_handler_err = handlers.RotatingFileHandler(dir_path + '/log/crawler.log', maxBytes=1048576, backupCount=5)
         file_formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s', '%Y-%m-%d %H:%M:%S')
         file_handler_err.setFormatter(file_formatter)
