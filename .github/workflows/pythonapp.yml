@@ -32,5 +32,7 @@ jobs:
       - name: Run program now list
         run: |
           timeout 360s python crawler.py media=now list
-          mkdir floodfire_crawler/log
+          cd floodfire_crawler
+          mkdir log
+          cd ..
           mysql --user="root" --password="root" --execute="SELECT url title crawler_count error_count FROM list;"
