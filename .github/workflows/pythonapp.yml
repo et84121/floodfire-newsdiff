@@ -33,4 +33,4 @@ jobs:
         run: |
           mkdir -p floodfire_crawler/log
           timeout 360s python crawler.py media=now list
-          mysql --user="root" --password="root" --execute="SELECT url title crawler_count error_count FROM list;"
+          mysql --user="root" --password="root" --execute="SELECT url, title, crawler_count, error_count FROM list;"
