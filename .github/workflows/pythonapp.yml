@@ -27,8 +27,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Setup Database
       run: |
-        mysql --user="root" --password="root" --execute="CREATE DATABASE floodfire_newsdiff_test;"
-        mysql --user="root" --password="root" < _INSTALL/ffnewsdiff.sql
+        mysql --user="root" --password="root" --execute="CREATE DATABASE floodfireNewsdiffTest;"
+        mysql --user="root" --password="root" floodfireNewsdiffTest < _INSTALL/ffnewsdiff.sql
+        "[RDB]\nDB_HOST = localhost\nDB_PORT = 3306\nDB_USER = root\nDB_PASSWORD = root\nDB_DATABASE = floodfireNewsdiffTest" > config.ini
     - name: Test with pytest
       run: |
         pip install pytest
