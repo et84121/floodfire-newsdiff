@@ -32,4 +32,5 @@ jobs:
       - name: Run program now list
         run: |
           timeout 360s python crawler.py media=now list
+          sleep 360
           mysql --user="root" --password="root" floodfireNewsdiffTest --execute="SELECT url, title, crawler_count, error_count FROM list;"
