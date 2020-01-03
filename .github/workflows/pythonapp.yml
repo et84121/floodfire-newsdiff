@@ -33,4 +33,4 @@ jobs:
         run: |
           timeout 120s python crawler.py media=now list
           sleep 120
-          >&2 mysql --user="root" --password="root" floodfireNewsdiffTest --execute="SELECT url, title, crawler_count, error_count FROM list;"
+          mysql --user="root" --password="root" floodfireNewsdiffTest --execute="SELECT url, title, crawler_count, error_count FROM list;" >&2
