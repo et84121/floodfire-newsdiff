@@ -31,8 +31,8 @@ jobs:
           printf "[RDB]\nDB_HOST = localhost\nDB_PORT = 3306\nDB_USER = root\nDB_PASSWORD = root\nDB_DATABASE = floodfireNewsdiffTest\n" > config.ini
       - name: Run program now list
         run: |
-          timeout 360s python crawler.py media=now list
           cd floodfire_crawler
           mkdir log
           cd ..
+          timeout 360s python crawler.py media=now list
           mysql --user="root" --password="root" --execute="SELECT url title crawler_count error_count FROM list;"
