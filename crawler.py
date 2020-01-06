@@ -2,6 +2,7 @@
 
 import os
 import logging
+import sys
 from logging import handlers
 from argparse import ArgumentParser
 from configparser import ConfigParser
@@ -24,8 +25,19 @@ from floodfire_crawler.engine.now_page_crawler import NowPageCrawler
 
 
 class Crawler():
-    def __init__(self, args):
-        self.args = args
+    def __init__(self, args: sys.argv):
+        parser = ArgumentParser(description="水火新聞爬蟲")
+        parser.add_argument("media", help="指定爬抓的媒體")
+        parser.add_argument("typeof", choices=['list', 'page'],
+                            default='list', help="爬抓的類別：列表、頁面")
+        parser.add_argument("-w", "--raw", action="store_true",
+                            help="儲存網頁原始內容")
+        parser.add_argument("-d", "--diff", action="store_true",
+                            help="儲存網頁 Diff 差異")
+        parser.add_argument("-v", "--visual", action="store_true",
+                            help="儲存網頁 media 連結內容")
+        self.args = parser.parse_args(args[1:])
+
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         self.config = ConfigParser()
@@ -164,17 +176,6 @@ class Crawler():
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser(description="水火新聞爬蟲")
-    parser.add_argument("media", help="指定爬抓的媒體")
-    parser.add_argument("typeof", choices=['list', 'page'],
-                        default='list', help="爬抓的類別：列表、頁面")
-    parser.add_argument("-w", "--raw", action="store_true",
-                        help="儲存網頁原始內容")
-    parser.add_argument("-d", "--diff", action="store_true",
-                        help="儲存網頁 Diff 差異")
-    parser.add_argument("-v", "--visual", action="store_true",
-                        help="儲存網頁 media 連結內容")
-    args = parser.parse_args()
 
-    c = Crawler(args)
+    c = Crawler(sys.argv)
     c.main()
