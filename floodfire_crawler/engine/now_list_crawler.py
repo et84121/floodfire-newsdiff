@@ -73,7 +73,7 @@ class NowListCrawler(BaseListCrawler):
                     break
 
             # check if it exceeds the end day
-            end_day = date(2009, 8, 31)
+            end_day = date(2000, 8, 31)
 
             if self.config.has_option('NOW', 'endDay'):
                 end_day = datetime.strptime(self.config['NOW']['endDay'], '%Y-%m-%d')
