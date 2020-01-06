@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import requests
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from bs4 import BeautifulSoup
 from hashlib import md5
 from time import sleep
@@ -68,6 +68,14 @@ class NowListCrawler(BaseListCrawler):
             # check if it exceeds the number of pages
             if type(jsonRes) is not list:
                 if jsonRes['code'] == 'rest_post_invalid_page_number':
+                    break
+
+            # check if it exceeds the end day
+            end_day = date(2009, 8, 31)
+            for news in jsonRes:
+                newsDate = datetime.strptime(news['date'], '%Y-%m-%dT%H:%M:%S')
+                numdays = (newsDate-end_day).days
+                if numdays < 0:
                     break
 
             # parse json data
