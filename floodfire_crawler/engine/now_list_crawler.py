@@ -5,6 +5,7 @@ from datetime import date, timedelta, datetime
 from bs4 import BeautifulSoup
 from hashlib import md5
 from time import sleep
+from configparser import ConfigParser
 from floodfire_crawler.core.base_list_crawler import BaseListCrawler
 from floodfire_crawler.storage.rdb_storage import FloodfireStorage
 import time
@@ -20,10 +21,11 @@ class NowListCrawler(BaseListCrawler):
     def url(self, value):
         self._url = value
 
-    def __init__(self, config):
+    def __init__(self, config: ConfigParser):
+        self.config = config
         self.floodfire_storage = FloodfireStorage(config)
 
-    def fetch_html(self, url):
+    def fetch_html(self, url: str):
         """
         it return json response in this news source 
         """
@@ -71,12 +73,16 @@ class NowListCrawler(BaseListCrawler):
                     break
 
             # check if it exceeds the end day
-            end_day = date(2009, 8, 31)
+            end_day = date(2000, 8, 31)
+
+            if self.config.has_option('NOW', 'endDay'):
+                end_day = datetime.strptime(self.config['NOW']['endDay'], '%Y-%m-%d')
+
             for news in jsonRes:
                 newsDate = datetime.strptime(news['date'], '%Y-%m-%dT%H:%M:%S')
                 numdays = (newsDate-end_day).days
                 if numdays < 0:
-                    break
+                    exit(0)
 
             # parse json data
             news_list = self.fetch_list(jsonRes)

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
 import requests
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from bs4 import BeautifulSoup
 from hashlib import md5
 from time import sleep
+from configparser import ConfigParser
 from floodfire_crawler.core.base_list_crawler import BaseListCrawler
 from floodfire_crawler.storage.rdb_storage import FloodfireStorage
 import time
@@ -20,7 +21,8 @@ class NtkListCrawler(BaseListCrawler):
     def url(self, value):
         self._url = value
 
-    def __init__(self, config):
+    def __init__(self, config: ConfigParser):
+        self.config = config
         self.floodfire_storage = FloodfireStorage(config)
 
     def fetch_html(self, url):
@@ -54,6 +56,8 @@ class NtkListCrawler(BaseListCrawler):
     def make_a_round(self):
         today = date.today()
         end_day = date(2009, 8, 31)
+        if self.config.has_option('NTK', 'endDay'):
+            end_day = datetime.strptime(self.config['NTK']['endDay'], '%Y-%m-%d').date()
         numdays = (today-end_day).days
         # first page
         consecutive = 0
