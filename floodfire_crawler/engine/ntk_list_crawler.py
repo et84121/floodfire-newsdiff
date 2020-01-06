@@ -57,7 +57,7 @@ class NtkListCrawler(BaseListCrawler):
         today = date.today()
         end_day = date(2009, 8, 31)
         if self.config.has_option('NTK', 'endDay'):
-            end_day = datetime.strptime(self.config['NTK']['endDay'], '%Y-%m-%d')
+            end_day = datetime.strptime(self.config['NTK']['endDay'], '%Y-%m-%d').date()
         numdays = (today-end_day).days
         # first page
         consecutive = 0
