@@ -82,7 +82,7 @@ class NowListCrawler(BaseListCrawler):
                 newsDate = datetime.strptime(news['date'], '%Y-%m-%dT%H:%M:%S')
                 numdays = (newsDate-end_day).days
                 if numdays < 0:
-                    exit(0)
+                    exit()
 
             # parse json data
             news_list = self.fetch_list(jsonRes)

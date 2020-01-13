@@ -63,7 +63,10 @@ class NtkListCrawler(BaseListCrawler):
         consecutive = 0
         page_url = self.url
         print(page_url)
-        sleep(2)
+        if self.config.has_option('NTK', 'sleepTime'):
+            sleep(int(self.config['NTK']['sleepTime']))
+        else:
+            sleep(2)
         html = self.fetch_html(page_url)
 
         soup = BeautifulSoup(html, 'html.parser')

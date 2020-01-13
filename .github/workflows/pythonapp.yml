@@ -26,9 +26,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Setup Database
         run: |
-          mysql --user="root" --password="root" --execute="CREATE DATABASE floodfireNewsdiffTest;"
-          mysql --user="root" --password="root" floodfireNewsdiffTest < _INSTALL/ffnewsdiff.sql
-          printf "[RDB]\nDB_HOST = localhost\nDB_PORT = 3306\nDB_USER = root\nDB_PASSWORD = root\nDB_DATABASE = floodfireNewsdiffTest\n" > config.ini
+          sh ./setup_db.sh
       - name: Run program now list
         run: |
           timeout 120s python crawler.py apd list

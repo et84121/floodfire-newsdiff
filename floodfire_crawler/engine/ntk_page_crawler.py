@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from time import sleep, strftime, strptime
 from random import randint
+from configparser import ConfigParser
 from floodfire_crawler.core.base_page_crawler import BasePageCrawler
 from floodfire_crawler.storage.rdb_storage import FloodfireStorage
 from floodfire_crawler.service.diff import FloodfireDiff
@@ -14,10 +15,11 @@ from floodfire_crawler.service.diff import FloodfireDiff
 
 class NtkPageCrawler(BasePageCrawler):
 
-    def __init__(self, config, logme):
+    def __init__(self, config: ConfigParser, logme):
         self.code_name = "ntk"
         self.floodfire_storage = FloodfireStorage(config)
         self.logme = logme
+        self.config = config
 
     def fetch_html(self, url):
         """
@@ -174,7 +176,7 @@ class NtkPageCrawler(BasePageCrawler):
                             if diff_col_list is None:
                                 # 有上一筆，但沒有不同，更新爬抓次數，不儲存
                                 print('has last, no diff')
-                                crawl_count += 1 
+                                crawl_count += 1
                                 self.floodfire_storage.update_list_crawlercount(row['url_md5'])
                                 continue
                             else:
@@ -188,7 +190,7 @@ class NtkPageCrawler(BasePageCrawler):
                     if self.floodfire_storage.insert_page(news_page, table_name, diff_vals):
                         # 更新爬抓次數記錄
                         self.floodfire_storage.update_list_crawlercount(row['url_md5'])
-                        self.floodfire_storage.update_list_versioncount(row['url_md5'])                            
+                        self.floodfire_storage.update_list_versioncount(row['url_md5'])
                         # 本次爬抓計數+1
                         crawl_count += 1
                     else:
@@ -203,8 +205,11 @@ class NtkPageCrawler(BasePageCrawler):
                             vistual_row['url_md5'] = row['url_md5']
                             self.floodfire_storage.insert_visual_link(vistual_row, version)
 
-                    # 隨機睡 2~6 秒再進入下一筆抓取
-                    sleep(randint(2, 6))
+                    if self.config.has_option('NTK', 'sleepTime'):
+                        sleep(int(self.config['NTK']['sleepTime']))
+                    else:
+                        # 隨機睡 2~6 秒再進入下一筆抓取
+                        sleep(randint(2, 6))
                 else:
                     # get 網頁失敗的時候更新 error count
                     self.floodfire_storage.update_list_errorcount(row['url_md5'])
