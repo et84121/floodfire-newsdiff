@@ -78,11 +78,14 @@ class NowListCrawler(BaseListCrawler):
             if self.config.has_option('NOW', 'endDay'):
                 end_day = datetime.strptime(self.config['NOW']['endDay'], '%Y-%m-%d')
 
+            breakLoop = False
             for news in jsonRes:
                 newsDate = datetime.strptime(news['date'], '%Y-%m-%dT%H:%M:%S')
                 numdays = (newsDate-end_day).days
                 if numdays < 0:
-                    exit()
+                    breakLoop = True
+            if breakLoop:
+                break
 
             # parse json data
             news_list = self.fetch_list(jsonRes)

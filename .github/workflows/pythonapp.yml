@@ -27,8 +27,13 @@ jobs:
       - name: Setup Database
         run: |
           sh ./setup_db.sh
-      - name: Run program now list
+      - name: PyTest
         run: |
-          timeout 120s python crawler.py apd list
-          sleep 120
-          mysql --user="root" --password="root" floodfireNewsdiffTest --execute="SELECT url, title, crawler_count, error_count FROM list;"
+          pip install pytest
+          export PYTHONPATH=.:$PYTHONPATH
+          pytest
+      # - name: Run program now list
+      #   run: |
+      #     timeout 120s python crawler.py apd list
+      #     sleep 120
+      #     mysql --user="root" --password="root" floodfireNewsdiffTest --execute="SELECT url, title, crawler_count, error_count FROM list;"
